@@ -75,6 +75,7 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.TextElementArray;
 import com.lowagie.text.html.HtmlTags;
 import com.lowagie.text.html.Markup;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.draw.LineSeparator;
 import com.lowagie.text.xml.simpleparser.SimpleXMLDocHandler;
@@ -110,6 +111,8 @@ public class HTMLWorker implements SimpleXMLDocHandler, DocListener {
 
 	private HashMap interfaceProps;
 
+	private BaseFont baseFont;
+
 	private FactoryProperties factoryProperties = new FactoryProperties();
 
 	/** Creates a new instance of HTMLWorker
@@ -141,6 +144,11 @@ public class HTMLWorker implements SimpleXMLDocHandler, DocListener {
 	}
 
 	public void parse(Reader reader) throws IOException {
+		SimpleXMLParser.parse(this, null, reader, true);
+	}
+
+	public void parse(Reader reader , BaseFont baseFont) throws IOException {
+		this.baseFont = baseFont;
 		SimpleXMLParser.parse(this, null, reader, true);
 	}
 
@@ -639,7 +647,7 @@ public class HTMLWorker implements SimpleXMLDocHandler, DocListener {
 			if (currentParagraph == null) {
 				currentParagraph = FactoryProperties.createParagraph(cprops);
 			}
-			Chunk chunk = factoryProperties.createChunk(content, cprops);
+			Chunk chunk = factoryProperties.createChunk(content, cprops, baseFont);
 			currentParagraph.add(chunk);
 			return;
 		}
@@ -676,7 +684,7 @@ public class HTMLWorker implements SimpleXMLDocHandler, DocListener {
 		if (currentParagraph == null) {
 			currentParagraph = FactoryProperties.createParagraph(cprops);
 		}
-		Chunk chunk = factoryProperties.createChunk(buf.toString(), cprops);
+		Chunk chunk = factoryProperties.createChunk(buf.toString(), cprops, baseFont);
 		currentParagraph.add(chunk);
 	}
 

@@ -95,6 +95,24 @@ public class FactoryProperties {
 		return ck;
 	}
 
+	public Chunk createChunk(String text, ChainedProperties props, BaseFont baseFont) {
+		Font font = getFont(props);
+		float size = font.getSize();
+		if(null != baseFont){
+			Color color = font.getColor();
+			int style = font.getStyle();
+			font = new Font(baseFont, size, style, color);
+		}
+		size /= 2;
+		Chunk ck = new Chunk(text, font);
+		if (props.hasProperty("sub"))
+			ck.setTextRise(-size);
+		else if (props.hasProperty("sup"))
+			ck.setTextRise(size);
+		ck.setHyphenation(getHyphenation(props));
+		return ck;
+	}
+
 	private static void setParagraphLeading(Paragraph p, String leading) {
 		if (leading == null) {
 			p.setLeading(0, 1.5f);
@@ -196,6 +214,8 @@ public class FactoryProperties {
 			encoding = BaseFont.WINANSI;
 		return fontImp.getFont(face, encoding, true, size, style, color);
 	}
+
+
 
 	/**
 	 * Gets a HyphenationEvent based on the hyphenation entry in ChainedProperties.
