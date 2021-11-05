@@ -54,9 +54,9 @@ public class CJKHTML2PDFTest {
 		DocWriter docWriter = PdfWriter.getInstance(document, PdfTestBase.getOutputStream("html2pdf.pdf"));
 
 		document.open();
-		Phrase myPhrase  = new Phrase();
-		myPhrase.add(new Phrase("中文", FontFactory.getFont("Microsoft YaHei", 20)));
-		document.add(myPhrase);
+//		Phrase myPhrase  = new Phrase();
+//		myPhrase.add(new Phrase("中文", FontFactory.getFont("Microsoft YaHei", 20)));
+//		document.add(myPhrase);
 
 		HTMLWorker worker = new HTMLWorker(document);
 //		BaseFont baseFontChinese = BaseFont.createFont("src/main/resources/font/msyh.ttc,0", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
